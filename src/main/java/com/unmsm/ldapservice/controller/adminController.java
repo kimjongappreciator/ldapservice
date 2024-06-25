@@ -79,7 +79,7 @@ public class adminController {
         try {
             String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");
             if (usuario == null) {
-                this.ldap.agregarUsuario(usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCodigo(), apellidos,
+                this.ldap.agregarUsuario(usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
                         usua.getNombres(), sEmail, usua.getNum_doc(), usua.getDesc_facu(), Stipo);
                 this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getNum_doc(), "Users");
                 Status = "El usuario " + sEmail +" fue creado";

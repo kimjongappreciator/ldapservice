@@ -36,6 +36,14 @@ public class Utils {
             String nombreLower = nombre.toLowerCase();
             if(nombreLower.contains(sLower)){
                 return s;
+            }else if(nombreLower.contains("biologicas")){
+                return "Biologia";
+            }else if(nombreLower.contains("administrativas")){
+                return "Administracion";
+            }else if(nombreLower.contains("contables")){
+                return "Contabilidad";
+            }else if(nombreLower.contains("economicas")){
+                return "Economia";
             }
         }return null;
     }

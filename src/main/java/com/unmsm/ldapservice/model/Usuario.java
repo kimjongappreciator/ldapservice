@@ -16,4 +16,5 @@ public class Usuario {
     private String grupo;
     private String codigo;
     private String UidNumber;
+    private String pass;
 }

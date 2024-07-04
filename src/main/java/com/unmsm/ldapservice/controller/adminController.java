@@ -76,12 +76,26 @@ public class adminController {
         }
         String Stipo = usua.getDesc_tipo_usua() + " " + facu;
 
+        String sGrupo;
+
+        if(usua.getDesc_tipo_usua() == "Pregrado"){
+            sGrupo = "PREGRADOM";
+        }
+        else if(usua.getDesc_tipo_usua() == "Posgrado"){
+            sGrupo = "POSGRADOM";
+        }
+        else{
+            sGrupo = "Users";
+        }
+
+
+
         try {
             String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");
             if (usuario == null) {
                 this.ldap.agregarUsuario(usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
-                        usua.getNombres(), sEmail, usua.getNum_doc(), usua.getDesc_facu(), Stipo);
-                this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getNum_doc(), "Users");
+                        usua.getNombres(), sEmail, usua.getNum_doc(), usua.getDesc_facu(), Stipo, usua.getPass());
+                this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), sGrupo);
                 Status = "El usuario " + sEmail +" fue creado";
                 return ResponseEntity.ok(Status);
             } else {

@@ -64,7 +64,7 @@ public class CambioClaveLdap {
         return ctx;
     }
 
-    public void agregarUsuario(String sUid, String sUidNumber, String sGidNumber, String sCodigo, String sSn, String sGivenName, String sEmail, String sDni, String sOu, String sTipo) throws Exception {
+    public void agregarUsuario(String sUid, String sUidNumber, String sGidNumber, String sCodigo, String sSn, String sGivenName, String sEmail, String sDni, String sOu, String sTipo, String pass) throws Exception {
         String sNombres = sGivenName.trim() + " " + sSn.trim();
         Attributes matchAttrs = new BasicAttributes(true);
         matchAttrs.put(new BasicAttribute("acctSyncWinSAMAccountName", sUid));
@@ -80,7 +80,7 @@ public class CambioClaveLdap {
         matchAttrs.put(new BasicAttribute("mail", sEmail));
         matchAttrs.put(new BasicAttribute("o", mayuscula(sTipo)));
         matchAttrs.put(new BasicAttribute("st", Facultad(sOu)));
-        matchAttrs.put(new BasicAttribute("userPassword", Claves.ldapMd5Password(sDni)));
+        matchAttrs.put(new BasicAttribute("userPassword", Claves.ldapMd5Password(pass)));
         BasicAttribute oc = new BasicAttribute("objectClass", "top");
         oc.add("inetOrgPerson");
         oc.add("acctSyncAccount");

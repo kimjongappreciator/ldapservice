@@ -4,7 +4,7 @@ import com.unmsm.ldapservice.helper.Utils;
 import com.unmsm.ldapservice.model.Usuario;
 import com.unmsm.ldapservice.service.CambioClaveGoogle;
 import com.unmsm.ldapservice.service.CambioClaveLdap;
-import jdk.jshell.execution.Util;
+//import jdk.jshell.execution.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +66,7 @@ public class adminController {
         Utils util = new Utils();
         String Status;
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
-        String apellidos = usua.getApellido_paterno() + usua.getApellido_materno();
+        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
         //uidNumber = id de usuario en db
         //uid = correo sin dominio
         //stipo = tipo + facultad ejem: pregrado + medicina

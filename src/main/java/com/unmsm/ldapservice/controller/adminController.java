@@ -4,7 +4,6 @@ import com.unmsm.ldapservice.helper.Utils;
 import com.unmsm.ldapservice.model.Usuario;
 import com.unmsm.ldapservice.service.CambioClaveGoogle;
 import com.unmsm.ldapservice.service.CambioClaveLdap;
-//import jdk.jshell.execution.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,28 +66,28 @@ public class adminController {
         String Status;
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
         String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
+
         //uidNumber = id de usuario en db
         //uid = correo sin dominio
         //stipo = tipo + facultad ejem: pregrado + medicina
+
         String facu = util.buscarfacultad(usua.getDesc_facu());
+
         if(facu == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");
         }
         String Stipo = usua.getDesc_tipo_usua() + " " + facu;
-
         String sGrupo;
 
-        if(usua.getDesc_tipo_usua() == "Pregrado"){
+        if(usua.getDesc_tipo_usua().equals("Pregrado")){
             sGrupo = "PREGRADOM";
         }
-        else if(usua.getDesc_tipo_usua() == "Posgrado"){
+        else if(usua.getDesc_tipo_usua().equals("Posgrado")){
             sGrupo = "POSGRADOM";
         }
         else{
             sGrupo = "Users";
         }
-
-
 
         try {
             String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");
@@ -112,8 +111,39 @@ public class adminController {
     }
 
     @PostMapping(path = "/docente")
-    public ResponseEntity<String> crearDocente() throws Exception {
-        return ResponseEntity.ok("falta implementar");
+    public ResponseEntity<String> crearDocente(@RequestBody Usuario usua) throws Exception {
+        String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
+        Utils util = new Utils();
+        String Status;
+        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
+        String facu = util.buscarfacultad(usua.getDesc_facu());
+        String tipo = "Docente";
+
+        if(facu == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");
+        }
+
+        try {
+            String usuario = this.google.obtenerUsuario(sEmail);
+            if (usuario == null) {
+                this.ldap.agregarUsuarioDocente(1, "0", usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
+                            usua.getNombres(), sEmail, usua.getPass(), usua.getDesc_facu(),
+                        tipo + " " + facu, tipo.toUpperCase());
+
+                this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), "Docentes");
+                Status = "El usuario " + sEmail +" fue creado";
+                return ResponseEntity.ok(Status);
+            } else {
+                Status = "El usuario " + sEmail +" ya existe";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Status);
+            }
+        } catch (Exception ex) {
+            Status = "Error: " + ex.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Status);
+        } catch (Throwable ex) {
+            Status = "Error: " + ex.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Status);
+        }
     }
 
 

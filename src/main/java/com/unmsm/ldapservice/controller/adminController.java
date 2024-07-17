@@ -4,6 +4,8 @@ import com.unmsm.ldapservice.helper.Utils;
 import com.unmsm.ldapservice.model.Usuario;
 import com.unmsm.ldapservice.service.CambioClaveGoogle;
 import com.unmsm.ldapservice.service.CambioClaveLdap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/admin")
 public class adminController {
+    private static final Logger log = LoggerFactory.getLogger(adminController.class);
     private final CambioClaveLdap ldap;
     private final CambioClaveGoogle google;
 
@@ -78,6 +81,8 @@ public class adminController {
         }
         String Stipo = usua.getDesc_tipo_usua() + " " + facu;
         String sGrupo;
+        System.out.println(Stipo);
+        //log.info(Stipo);
 
         if(usua.getDesc_tipo_usua().equals("Pregrado")){
             sGrupo = "PREGRADOM";
@@ -88,6 +93,8 @@ public class adminController {
         else{
             sGrupo = "Users";
         }
+        System.out.println(sGrupo);
+        //log.info(sGrupo);
 
         try {
             String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");

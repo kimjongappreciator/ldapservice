@@ -50,7 +50,7 @@ public class adminController {
     }
 
     @GetMapping(path = "/facultad/{facu}")
-    public ResponseEntity<String> getFacultad(@PathVariable("facu")String facu) throws Exception {
+    public ResponseEntity<String> getFacultad(@PathVariable("facu")String facu){
         Utils util = new Utils();
         String res = util.buscarfacultad(facu);
         if(res != null){
@@ -61,7 +61,7 @@ public class adminController {
 
 
     @PostMapping(path = "/estudiante")
-    public ResponseEntity<String> crearEstudiante(@RequestBody Usuario usua) throws Exception {
+    public ResponseEntity<String> crearEstudiante(@RequestBody Usuario usua) {
         Utils util = new Utils();
         String Status;
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
@@ -111,7 +111,7 @@ public class adminController {
     }
 
     @PostMapping(path = "/docente")
-    public ResponseEntity<String> crearDocente(@RequestBody Usuario usua) throws Exception {
+    public ResponseEntity<String> crearDocente(@RequestBody Usuario usua) {
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
         Utils util = new Utils();
         String Status;

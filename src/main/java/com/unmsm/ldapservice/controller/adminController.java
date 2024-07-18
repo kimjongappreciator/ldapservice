@@ -83,8 +83,12 @@ public class adminController {
         String sGrupo;
         System.out.println(Stipo);
         //log.info(Stipo);
+        String situacion = usua.getSituacion();
 
-        if(usua.getDesc_tipo_usua().equals("Pregrado")){
+        if(situacion == "2"){
+            sGrupo = "EGRESADOS";
+        }
+        else if(usua.getDesc_tipo_usua().equals("Pregrado")){
             sGrupo = "PREGRADOM";
         }
         else if(usua.getDesc_tipo_usua().equals("Posgrado")){

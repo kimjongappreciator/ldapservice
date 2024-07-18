@@ -1,6 +1,7 @@
 package com.unmsm.ldapservice.controller;
 
 import com.unmsm.ldapservice.helper.Utils;
+import com.unmsm.ldapservice.model.Search;
 import com.unmsm.ldapservice.model.Usuario;
 import com.unmsm.ldapservice.service.CambioClaveGoogle;
 import com.unmsm.ldapservice.service.CambioClaveLdap;
@@ -32,6 +33,14 @@ public class adminController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(path = "/exists/{email}")
+    public ResponseEntity<Search> userExists(@PathVariable("email") String email) throws Exception {
+        Search res = new Search();
+        res.setGoogle(google.obtenerUsuario(email+"@unmsm.edu.pe"));
+        res.setLdap(ldap.Buscar(email));
+        return  ResponseEntity.ok(res);
     }
 
     @GetMapping(path = "/grupos")

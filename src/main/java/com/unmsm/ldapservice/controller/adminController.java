@@ -90,8 +90,7 @@ public class adminController {
         }
         String Stipo = usua.getDesc_tipo_usua() + " " + facu;
         String sGrupo;
-        System.out.println(Stipo);
-        //log.info(Stipo);
+        //System.out.println(Stipo);
         String situacion = usua.getSituacion();
 
         if(situacion == "2"){

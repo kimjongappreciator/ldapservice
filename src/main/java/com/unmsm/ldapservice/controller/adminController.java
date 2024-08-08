@@ -81,6 +81,7 @@ public class adminController {
         }
         try {
             this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass());
+            System.out.println("updateado");
             return ResponseEntity.ok().build();
         }catch (Exception e) {
             return ResponseEntity.notFound().build();

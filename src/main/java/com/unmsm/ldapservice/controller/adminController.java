@@ -73,8 +73,6 @@ public class adminController {
 
     @PostMapping(path = "/cambioldap")
         public ResponseEntity<String> cambioLdap(@RequestBody Usuario usua) throws Exception {
-        System.out.println(usua.getCorreo_sm());
-        System.out.println(usua.getPass());
         int cont = this.ldap.Buscar(usua.getCorreo_sm());
         if(cont == 0){
             return ResponseEntity.notFound().build();

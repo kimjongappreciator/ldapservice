@@ -21,10 +21,7 @@ public class Claves {
         md.update(sPassword.getBytes("UTF-8"));
         byte[] raw = md.digest();
         Base64.Encoder base64 = Base64.getEncoder();
-        System.out.println(raw.toString());
-        System.out.println(base64.encodeToString(raw));
         String result = "{MD5}" + base64.encodeToString(raw);
-        System.out.println(result);
         return result;
     }
 

@@ -130,7 +130,7 @@ public class adminController {
             if (usuario == null) {
                 this.ldap.agregarUsuario(usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
                         usua.getNombres(), sEmail, usua.getNum_doc(), usua.getDesc_facu(), Stipo, usua.getPass());
-                this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass()); // este de aca se agrego pq el metodo original no castea a byte, TODO: actualizar el metodo
+                //this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass());
                 this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), sGrupo);
                 Status = "El usuario " + sEmail +" fue creado";
                 return ResponseEntity.ok(Status);
@@ -166,7 +166,7 @@ public class adminController {
                 this.ldap.agregarUsuarioDocente(1, "0", usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
                             usua.getNombres(), sEmail, usua.getPass(), usua.getDesc_facu(),
                         tipo + " " + facu, tipo.toUpperCase());
-                this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass());
+                //this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass());
 
                 this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), "Docentes");
                 Status = "El usuario " + sEmail +" fue creado";

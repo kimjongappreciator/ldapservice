@@ -3,6 +3,7 @@ package com.unmsm.ldapservice.controller;
 import com.unmsm.ldapservice.helper.Utils;
 import com.unmsm.ldapservice.model.Search;
 import com.unmsm.ldapservice.model.Usuario;
+import com.unmsm.ldapservice.model.cambioBody;
 import com.unmsm.ldapservice.service.CambioClaveGoogle;
 import com.unmsm.ldapservice.service.CambioClaveLdap;
 import org.slf4j.Logger;
@@ -179,6 +180,44 @@ public class adminController {
             Status = "Error: " + ex.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Status);
         }
+    }
+
+    @PostMapping(path = "/cambioclave")
+    public ResponseEntity<String> cambiarClave(@RequestBody cambioBody user) throws Exception{
+        String sError;
+        String uString;
+        String uName = user.getUsername();
+        String oPass = user.getOldPass();
+        String uPass = user.getPass();
+
+        if(uName== null || oPass == null || uPass == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("datos incompletos");
+        }
+
+        try {
+            uString = this.google.obtenerUsuario(uName+"@unmsm.edu.pe");
+            if(uString == null){
+                return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado en google");
+            }
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al llamar al servicio de google");
+        }
+
+        try {
+            sError = this.ldap.verificaClave(uName, oPass);
+            if(sError.isEmpty()){
+                this.ldap.cambioClave(uName, uPass);
+                this.google.cambioClave(uName+"@unmsm.edu.pe", uPass);
+                return ResponseEntity.ok("Cambio de clave exitoso");
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sError);
+        }catch (Exception ex){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar cambiar la contrasena");
+
+        } catch (Throwable e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al llamar al servicio de google");
+        }
+
     }
 
 

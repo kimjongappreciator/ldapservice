@@ -182,6 +182,7 @@ public class adminController {
         }
     }
 
+    @CrossOrigin
     @PostMapping(path = "/cambioclave")
     public ResponseEntity<String> cambiarClave(@RequestBody cambioBody user) throws Exception{
         String sError;

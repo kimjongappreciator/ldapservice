@@ -84,6 +84,7 @@ public class CambioClaveGoogle {
 
     public CambioClaveGoogle() throws IOException, GeneralSecurityException, Exception {
         this.httpTransport = (HttpTransport)GoogleNetHttpTransport.newTrustedTransport();
+        //System.out.println(this.DATA_STORE_DIR.getAbsolutePath());
         this.dataStoreFactory = new FileDataStoreFactory(this.DATA_STORE_DIR);
         this.credential = authorize();
         this.oauth2 = (new Oauth2.Builder(this.httpTransport, this.JSON_FACTORY, (HttpRequestInitializer)this.credential)).setApplicationName("cambioclave20151/1.0").build();
@@ -124,7 +125,8 @@ public class CambioClaveGoogle {
     }
 
     private Credential authorize() throws IOException {
-        String creds_file_path = System.getProperty("user.dir")+ "\\clientsecrets.json";
+        String creds_file_path = System.getProperty("user.dir")+ "\\clientsecrets.json"; //windows
+        //String creds_file_path = System.getProperty("user.dir")+ "/clientsecrets.json"; //linux
         InputStream in = new FileInputStream(creds_file_path);
         if (in == null) {
             log.info("No credential found @ {}", creds_file_path);

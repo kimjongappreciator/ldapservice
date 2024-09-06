@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("api/admin")
 public class adminController {
@@ -182,7 +182,6 @@ public class adminController {
         }
     }
 
-    @CrossOrigin
     @PostMapping(path = "/cambioclave")
     public ResponseEntity<String> cambiarClave(@RequestBody cambioBody user) throws Exception{
         String sError;

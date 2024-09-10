@@ -34,7 +34,7 @@ public class Utils {
         for (String s : facultad) {
             String sLower = s.toLowerCase();
             String nombreLower = nombre.toLowerCase();
-            if(nombreLower.equals("farmacia y bioquimica")){
+            if(nombreLower.equals("facultad de farmacia y bioquimica")){
                 return "Farmacia";
             }
             else if(nombreLower.contains(sLower)){

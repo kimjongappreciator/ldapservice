@@ -34,7 +34,10 @@ public class Utils {
         for (String s : facultad) {
             String sLower = s.toLowerCase();
             String nombreLower = nombre.toLowerCase();
-            if(nombreLower.contains(sLower)){
+            if(nombreLower.equals("farmacia y bioquimica")){
+                return "Farmacia";
+            }
+            else if(nombreLower.contains(sLower)){
                 return s;
             }else if(nombreLower.contains("biologicas")){
                 return "Biologia";
@@ -44,8 +47,6 @@ public class Utils {
                 return "Contabilidad";
             }else if(nombreLower.contains("economicas")){
                 return "Economia";
-            }else if(nombreLower.contains("farmacia y bioquimica")){
-                return "Farmacia";
             }
         }return null;
     }

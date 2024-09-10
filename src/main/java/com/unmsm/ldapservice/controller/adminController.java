@@ -99,6 +99,8 @@ public class adminController {
         //stipo = tipo + facultad ejem: pregrado + medicina
 
         String facu = util.buscarfacultad(usua.getDesc_facu());
+        System.out.println(usua.getDesc_facu());
+        System.out.println(facu);
 
         if(facu == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");

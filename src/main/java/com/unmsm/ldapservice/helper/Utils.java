@@ -44,6 +44,8 @@ public class Utils {
                 return "Contabilidad";
             }else if(nombreLower.contains("economicas")){
                 return "Economia";
+            }else if(nombreLower.contains("farmacia y bioquimica")){
+                return "Farmacia";
             }
         }return null;
     }

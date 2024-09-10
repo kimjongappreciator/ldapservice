@@ -86,6 +86,7 @@ public class CambioClaveLdap {
         oc.add("acctSyncAccount");
         oc.add("posixAccount");
         matchAttrs.put(oc);
+        System.out.println("uid=" + sUid + ",ou=" + sTipo + ",ou=" + sOu + ",dc=unmsm,dc=edu,dc=pe");
         this.ctx.createSubcontext("uid=" + sUid + ",ou=" + sTipo + ",ou=" + sOu + ",dc=unmsm,dc=edu,dc=pe", matchAttrs);
     }
 

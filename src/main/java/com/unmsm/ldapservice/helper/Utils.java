@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-
+    //cambiar todo este metodo por un hashmap ejm (facultad de farmacia y bioquimica, Farmacia) donde (k, v) k es la llave y v es el valor de retorno
     public Utils(){
         this.facultad.add("Administracion");
         this.facultad.add("Biologia");

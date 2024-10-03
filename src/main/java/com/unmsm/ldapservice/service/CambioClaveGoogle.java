@@ -127,6 +127,7 @@ public class CambioClaveGoogle {
     private Credential authorize() throws IOException {
         String creds_file_path = System.getProperty("user.dir")+ "\\clientsecrets.json"; //windows
         //String creds_file_path = System.getProperty("user.dir")+ "/clientsecrets.json"; //linux
+        System.out.println(creds_file_path);
         InputStream in = new FileInputStream(creds_file_path);
         if (in == null) {
             log.info("No credential found @ {}", creds_file_path);

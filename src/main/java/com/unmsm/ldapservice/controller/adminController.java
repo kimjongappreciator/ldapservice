@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.annotation.Retention;
 import java.util.List;
 @CrossOrigin
 @RestController
@@ -227,7 +226,7 @@ public class adminController {
     public ResponseEntity<String> crearGoogleDocente(@RequestBody Usuario usua) throws Exception{
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
         String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
-        String uString = "";
+        String uString;
         try{
             uString = this.google.obtenerUsuario(sEmail);
             if(uString == null){
@@ -246,9 +245,9 @@ public class adminController {
     public ResponseEntity<String> crearGoogleAlumno(@RequestBody Usuario usua) throws Exception{
         String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
         String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
-        String uString = "";
+        String uString;
         String situacion = usua.getSituacion();
-        String sGrupo = "";
+        String sGrupo;
 
         if(situacion == "2"){
             sGrupo = "EGRESADOS";

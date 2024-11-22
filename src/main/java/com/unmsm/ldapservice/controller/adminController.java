@@ -99,15 +99,14 @@ public class adminController {
         //stipo = tipo + facultad ejem: pregrado + medicina
 
         String facu = util.buscarfacultad(usua.getDesc_facu());
-        System.out.println(usua.getDesc_facu());
-        System.out.println(facu);
+        //System.out.println(usua.getDesc_facu());
+        //System.out.println(facu);
 
         if(facu == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");
         }
         String Stipo = usua.getDesc_tipo_usua() + " " + facu;
         String sGrupo;
-        //System.out.println(Stipo);
         String situacion = usua.getSituacion();
 
         if(situacion == "2"){
@@ -122,8 +121,6 @@ public class adminController {
         else{
             sGrupo = "Users";
         }
-        //System.out.println(sGrupo);
-        //log.info(sGrupo);
 
         try {
             String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");
@@ -222,123 +219,38 @@ public class adminController {
 
     }
 
-    @PostMapping(path = "/crearGoogleDocente")
-    public ResponseEntity<String> crearGoogleDocente(@RequestBody Usuario usua) throws Exception{
-        String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
-        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
+    @PostMapping(path = "/updatepwd")
+    /*este metodo es ligeramente distinto al de arriba, el de arriba se usa para que los usuarios cambien su contrasena, por eso requiere validar la contrasena actual
+    este es un cambio forzoso desde el panel del admin*/
+    public ResponseEntity<String> updatePwd(@RequestBody cambioBody user) throws Exception{
+
         String uString;
-        try{
-            uString = this.google.obtenerUsuario(sEmail);
-            if(uString == null){
-                this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), "Docentes");
-                return ResponseEntity.status(HttpStatus.OK).body("Usuario creado exitosamente");
-            }
-            else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario ya existe");
-            }
-        } catch (Throwable e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario");
-        }
-    }
+        String uName = user.getUsername();
+        String uPass = user.getPass();
 
-    @PostMapping(path = "/crearGoogleAlumno")
-    public ResponseEntity<String> crearGoogleAlumno(@RequestBody Usuario usua) throws Exception{
-        String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
-        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
-        String uString;
-        String situacion = usua.getSituacion();
-        String sGrupo;
-
-        if(situacion == "2"){
-            sGrupo = "EGRESADOS";
-        }
-        else if(usua.getDesc_tipo_usua().equals("Pregrado")){
-            sGrupo = "PREGRADOM";
-        }
-        else if(usua.getDesc_tipo_usua().equals("Posgrado")){
-            sGrupo = "POSGRADOM";
-        }
-        else{
-            sGrupo = "Users";
-        }
-        try{
-            uString = this.google.obtenerUsuario(sEmail);
-            if(uString == null){
-                this.google.agregarUsuario(apellidos, usua.getNombres(), sEmail, usua.getPass(), sGrupo);
-                return ResponseEntity.status(HttpStatus.OK).body("Usuario creado exitosamente");
-            }
-            else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario ya existe");
-            }
-        } catch (Throwable e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario");
-        }
-    }
-
-    @PostMapping(path = "/crearldapdocente")
-    public ResponseEntity<String> crearLdapDocente(@RequestBody Usuario usua) {
-        String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
-        Utils util = new Utils();
-        String Status;
-        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
-        String facu = util.buscarfacultad(usua.getDesc_facu());
-        String tipo = "Docente";
-
-        if(facu == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");
+        if(uName== null || uPass == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("datos incompletos");
         }
 
         try {
-            int usuario = this.ldap.Buscar(usua.getCorreo_sm());
-            if (usuario < 1) {
-                this.ldap.agregarUsuarioDocente(1, "0", usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
-                        usua.getNombres(), sEmail, usua.getPass(), usua.getDesc_facu(),
-                        tipo + " " + facu, tipo.toUpperCase());
-                //this.ldap.cambioClave(usua.getCorreo_sm(), usua.getPass());
-
-                Status = "El usuario " + sEmail +" fue creado";
-                return ResponseEntity.ok(Status);
-            } else {
-                Status = "El usuario " + sEmail +" ya existe";
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Status);
+            uString = this.google.obtenerUsuario(uName+"@unmsm.edu.pe");
+            if(uString == null){
+                return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado en google");
             }
-        } catch (Throwable ex) {
-            Status = "Error: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Status);
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al llamar al servicio de google");
         }
-    }
-
-    @PostMapping(path = "/crearldapestudiante")
-    public ResponseEntity<String> crearLdapEstudiante(@RequestBody Usuario usua) {
-        Utils util = new Utils();
-        String Status;
-        String sEmail = usua.getCorreo_sm() + "@unmsm.edu.pe";
-        String apellidos = usua.getApellido_paterno() + " " + usua.getApellido_materno();
-
-        String facu = util.buscarfacultad(usua.getDesc_facu());
-
-        if(facu == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error en la facultad");
-        }
-        String Stipo = usua.getDesc_tipo_usua() + " " + facu;
-
 
         try {
-            String usuario = this.google.obtenerUsuario(usua.getCorreo_sm() + "@unmsm.edu.pe");
-            if (usuario == null) {
-                this.ldap.agregarUsuario(usua.getCorreo_sm(), usua.getUidNumber(), "0", usua.getCod_usua(), apellidos,
-                        usua.getNombres(), sEmail, usua.getNum_doc(), usua.getDesc_facu(), Stipo, usua.getPass());
+             this.ldap.cambioClave(uName, uPass);
+             this.google.cambioClave(uName+"@unmsm.edu.pe", uPass);
+             return ResponseEntity.ok("Cambio de clave exitoso");
+        }catch (Exception ex){
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar cambiar la contrasena");
 
-                Status = "El usuario " + sEmail +" fue creado";
-                return ResponseEntity.ok(Status);
-            } else {
-                Status = "El usuario " + sEmail +" ya existe";
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Status);
-            }
         } catch (Throwable e) {
-            Status = "Error: " + e.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Status);
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al llamar al servicio de google");
         }
-    }
 
+    }
 }
